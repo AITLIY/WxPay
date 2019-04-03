@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>支付结果</title>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<style type="text/css">
+			.mbtn {
+				width: 130px;
+				height: 40px;
+			}
+						
+			.mbtn-white {			
+				border: #FF0101 1px solid;
+			}
+			
+			.p-l {
+				padding-left: 30px;
+				padding-right: 20px;
+			}
+			
+			.p-r {
+				padding-left: 20px;
+				padding-right: 30px;
+			}
+		</style>
+	</head>
+
+	<body ontouchstart="">
+
+		<!--支付成功-->
+		<section style="background: #D43530; padding: 70px 40px;">
+			<div class="ui-row-flex ui-whitespace">
+				<div style="margin-right: 20px;">
+					<i class="ui-icon-checked" style="font-size: 50px;color: #fff;"></i>
+				</div>
+				<div class="ui-col">
+					<h1 class="ui-txt-white">恭喜您，支付成功！</h1>
+					<h6 class="ui-txt-white">您的包裹会尽快发出~</h6>
+				</div>
+			</div>
+		</section>
+
+		<!--支付详情-->
+		<div style="margin: 50px 50px;">
+			<p>订单编号：<label id="orderId"></label></p>
+			<br />
+			<p>下单时间：<label id="orderTime"></label></p>
+			<br />
+			<p>交易方式：<label id="orderChannel"></label></p>
+			<br />
+			<p>实付金额：¥<label id="payMoney"></label></p>
+		</div>
+
+		<!--按钮查看订单 分享-->
+		<div class="ui-row-flex ui-whitespace">
+			<div class="ui-col p-l"><button class="mbtn ui-btn-lg ui-btn-danger" type="button" id="viewOrder">查看订单</button></div>
+			<div class="ui-col p-r"><button class="mbtn ui-btn-lg mbtn-white " type="button" id="share">返回主页</button></div>
+		</div>
+
+	</body>
+
+	<script type="text/javascript">
+		
+		//网页加载时调用
+		$(document).ready(function(){
+			getClientOrderDetails();
+		});
+		
+		//获取客户订单
+		function getClientOrderDetails() {
+			var url = 'getClientOrderDetails.action';
+			var orderNo = localStorage["orderNo"];
+			
+			$.ajax({
+				type: "post",
+				url: url,
+				dataType: "json",
+				data: {
+					orderNo: orderNo
+				},
+
+				success: function(data) {
+					console.log('data', data);
+					if(data.resultCode == 'SUCCESS') {
+
+						var orderChannel;
+						if(data.order_channel == 1){
+							orderChannel = "微信支付";
+						}
+						//支付详情		
+						$("#orderId").text(data.order_id);
+						$("#orderTime").text(data.order_time);
+						$("#orderChannel").text(orderChannel);
+						$("#payMoney").text(data.total_amount);	
+						
+					} else {
+						console.log('get data failed');
+						alert("get product failed");
+					}
+				}
+			});
+		}
+
+		//点击查看订单详情
+		$("#viewOrder").click(function() {
+			window.location.replace("Order_details.html"); 
+		})
+		//点击返回主页
+		$("#share").click(function() {
+			window.location.replace("product_detail.html");
+		})
+		
+		pushHistory();
+		window.addEventListener("popstate", function(e) {
+			window.location = 'Order_details.html';
+		}, false);
+
+		function pushHistory() {
+			var state = {
+				title: "title",
+				url: "#"
+			};
+			window.history.pushState(state, "title", "#");
+		}
+	</script>
+
+</html>

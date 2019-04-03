@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>倒计时</title>
+		<style type="text/css">
+			.press {
+				text-align: center;
+				margin-top: 20px;
+				color: transparent;
+				background-color: black;
+				text-shadow: rgba(255, 255, 255, 0.5) 0 5px 6px, rgba(255, 255, 255, 0.2) 1px 3px 3px;
+				-webkit-background-clip: text;
+			}
+		</style>
+		<script language="javascript" type="text/javascript">
+		
+			var date = new Date();
+			var year = parseInt(date.getFullYear());
+			var month = parseInt(date.getMonth() + 1);
+			var tomo = parseInt(date.getDate() + 1);
+			var week = parseInt(date.getDay());
+			console.log(week);
+			var interval = 1000;
+			
+			window.setInterval(function() {
+				ShowCountDown(year, month, tomo);
+			}, interval);
+
+			function ShowCountDown(year, month, day) {
+				var now = new Date();
+				var endDate = new Date(year, month - 1, day);
+				var leftTime = endDate.getTime() - now.getTime();
+				var leftsecond = leftTime / 1000 - 60 * 60 * 3;
+				 
+//				var day = Math.floor(leftsecond/60/60/24);
+				var hour = Math.floor(leftsecond/60/60%24);
+				var minute = Math.floor(leftsecond/60%60);
+				var second = Math.floor(leftsecond%60);
+				var wo = document.getElementById("countDown1");
+				var lc = document.getElementById("countDown2");
+
+				if(week > 5 || week < 1){
+					wo.innerHTML = "周末愉快！";
+					lc.innerHTML = "大吉大利，晚上吃鸡！";				
+				}else if( week < 6 && hour > 11 ) {
+					wo.innerHTML = "早上好！";
+					lc.innerHTML = "不想上班...";					
+				}else if( week < 6 && hour > 0 && hour < 4 ) {
+					wo.innerHTML = "请写下你对超哥的鼓励:<br/>" + "加油，你是最棒的！";
+					lc.innerHTML = "距离超哥下班时间还有:<br/>" + hour  + "小时" + minute + "分" + second + "秒";					
+				}else if( week < 6 && hour < 0 ) {
+					wo.innerHTML = "恭喜超哥成功下班！";
+					lc.innerHTML = "大吉大利，晚上吃鸡！";					
+				} else {
+					wo.innerHTML = "距离我的下班时间还有：<br/>" + (hour - 4) + "小时" + minute + "分" + second + "秒";
+					lc.innerHTML = "距离超哥下班时间还有:<br/>" + hour + "小时" + minute + "分" + second + "秒";
+				}
+			}
+			
+		</script>
+	</head>
+
+	<body>
+		<h1 class="press">温馨提示</h1>
+		<!--<img src="http://www.qqoi.cn/img_bizhi/18699563.jpeg" width="100%"/>-->		
+		<!--<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1509803293385&di=50c0b4e305af7c27ceebab45d33622c3&imgtype=0&src=http%3A%2F%2Fi-4.yxdown.com%2F2017%2F4%2F25%2Fb8d457cd-b61b-4682-96f0-1c0436a8e580.gif" width="100%"/>-->
+		<!--<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1509802892969&di=1311c544e8d826cc3d319aae945c02f0&imgtype=0&src=http%3A%2F%2Fngnews.7xz.com%2Fuploadfile%2F2017%2F0814%2F20170814031146740.gif" width="100%"/>-->
+		<!--<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1509803040094&di=742fb52464e8f0462801784b6a5d7a44&imgtype=0&src=http%3A%2F%2Fatt.gamefy.cn%2Ffiles%2F201707%2F150096003538778.gif" width="100%"/>--> 			
+		<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1509804102787&di=515db54cbab0fcc413003a75d318258c&imgtype=0&src=http%3A%2F%2Fnews.ijntv.cn%2Fqyzx%2Fuploads%2Fallimg%2F170807%2F163H13491-2.gif%3Fw%3D401%26h%3D290" width="100%"/>			
+		<h2 id="countDown2" class="press"></h2>
+		<h2 id="countDown1" class="press"></h2>	
+	</body>
+
+</html>

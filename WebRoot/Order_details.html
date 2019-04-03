@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>订单详情</title>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<script type="text/javascript" src="js/jquery.js"></script>
+	</head>
+
+	<body>
+
+		<!--订单状态-->
+		<section style="background: #D43530;padding: 30px;">
+			<h1 class="ui-txt-white"><label id="orderStatus"></label></h1>
+		</section>
+
+		<!--物流信息查询-->
+		<ul class="ui-list ui-list-one ui-list-link ui-border-tb ui-list-active" id="express">
+			<li class="ui-border-t">
+				<div class="ui-list-info">
+					<h4 class="ui-nowrap">物流信息</h4>
+					<div class="ui-txt-info"></div>
+				</div>
+			</li>
+		</ul>
+
+		<!--收货人信息-->
+		<ul class="ui-list ui-list-pure ui-border-tb">
+			<li class="ui-border-t">
+				<div class="ui-row-flex ui-whitespace">
+					<div style="margin-right: 20px;">
+						<i class="ui-icon-pin" style="font-size: 50px;color: #858586; margin-left: -20px; margin-right: -20px;"></i>
+					</div>
+					<div>
+						<h5 style="position: absolute;">收货人：<label id="name"></h5>
+						<h5 style="position: absolute; right: 10px;"></label><label id="phone"></label></h5>
+					</div>
+					<div style="margin-top: 20px;">
+						<h4>收货地址：<label id="address"></label></h4>
+					</div>
+				</div>
+			</li>
+		</ul>
+
+		<!--间隔-->
+		<section style="background: #E7E7E7;padding: 5px;"></section>
+
+		<!--商品信息-->
+		<ul class="ui-list ui-list-text" id="productList">
+			<li class="ui-border-t">
+				<div class="ui-list-info">
+					<h4>酷驾导航</h4>
+				</div>
+			</li>
+		</ul>
+
+		<!--价格信息-->
+		<ul class="ui-list ui-list-text ui-border-tb">
+
+			<li class="ui-border-t">
+				<div class="ui-list-info">
+					<h5><font color="#6B6B6B">商品总价</font></h5>
+				</div>
+				<div class="ui-list-action">
+					<h5><font color="#6B6B6B">¥ <label id="totalPrice"></label></font></h5>
+				</div>
+			</li>
+
+			<li class="ui-border-t">
+				<div class="ui-list-info">
+					<h5><font color="#6B6B6B">运费(快递)</font></h5>
+				</div>
+				<div class="ui-list-action">
+					<h5><font color="#6B6B6B">¥ <label id="deliverFee"></label></font></h5>
+				</div>
+			</li>
+
+			<!--<li class="ui-border-t">
+				<div class="ui-list-info">
+					<h5><font color="#6B6B6B">店家优惠</font></h5>
+				</div>
+				<div class="ui-list-action">
+					<font color="#6B6B6B">- ¥<label id="discounts"></label></font>
+				</div>
+			</li>-->
+
+			<li class="ui-border-t">
+				<div class="ui-list-info">
+					<h4>实付款</h4>
+				</div>
+				<div class="ui-list-action">
+					<font color="red">¥ <label id="payMoney"></label></font>
+				</div>
+			</li>
+		</ul>
+
+		<!--间隔-->
+		<section style="background: #E7E7E7;padding: 5px;"></section>
+
+		<!--支付方式-->
+		<ul class="ui-list ui-list-text ui-border-tb">
+			<li class="ui-border-t">
+				<div class="ui-list-info">
+					<h4>支付方式</h4>
+				</div>
+				<div class="ui-list-action">
+					<font color="#6B6B6B"><label id="orderChannel"></label></font>
+				</div>
+			</li>
+		</ul>
+
+		<!--支付详情-->
+		<div class="ui-whitespace" style="margin: 10px 10px 100px;">
+
+			<h5 class="ui-txt-info">订单编号：<label id="orderId"></label></h5>
+			<h5 class="ui-txt-info">创建时间：<label id="orderTime"></label></h5>
+			<h5 class="ui-txt-info" id="payTM">付款时间：<label id="payTime"></label></h5>
+			<h5 class="ui-txt-info" id="deliverTM">发货时间：<label id="deliverTime"></label></h5>
+			<h5 class="ui-txt-info" id="bargainTM">成交时间：<label id="bargainTime"></label></h5>
+		</div>
+
+		<!--浮动按钮-->
+		<div class="ui-footer ui-footer-stable ui-btn-group ui-border-t" id="btn">
+			<button class="ui-btn-lg ui-btn-danger" id="pay">微信支付</button>
+		</div>
+
+	</body>
+
+	<script type="text/javascript">
+		//网页加载时调用
+		$(document).ready(function() {
+			haveWxPay();
+			getClientOrderDetails();
+		});
+
+		//判断是否需要显示微信支付按钮
+		function haveWxPay() {
+			var orderNo = localStorage["orderStatus"];
+			if(orderNo != 1) {
+				$("#btn").hide();
+			}
+		}
+
+		//点击支付
+		$("#pay").click(function() {
+			payOrder();
+		})
+
+		//点击查看物流信息
+		$("#express").click(function() {
+			if(expressCompany.length != undefined && expressNum != undefined) {
+				var url = 'https://m.kuaidi100.com/index_all.html?type=' + expressCompany + '&postid=' + expressNum;
+				window.location.href = url;
+			} else {
+				window.location.replace("express_query.html");
+			}
+		})
+		//点击查看商品详情
+		$("#productList").click(function() {
+
+			window.location.replace("product_detail.html");
+		})
+
+		var expressCompany;
+		var expressNum;
+		//获取客户订单
+		function getClientOrderDetails() {
+			var url = 'getClientOrderDetails.action';
+
+			$.ajax({
+				type: "post",
+				url: url,
+				dataType: "json",
+				data: {
+					orderNo: orderNo
+				},
+
+				success: function(data) {
+					console.log('data', data);
+					if(data.resultCode == 'SUCCESS') {
+
+						//订单状态
+						var orderStatus;
+						if(data.order_status == 1) {
+							orderStatus = "未付款";
+						} else if(data.order_status == 2) {
+							orderStatus = "已付款";
+						} else if(data.order_status == 3) {
+							orderStatus = "已发货";
+						} else {
+							orderStatus = "交易成功";
+						}
+						$("#orderStatus").text(orderStatus);
+
+						//收货地址
+						$("#name").text(data.deliver_user);
+						$("#phone").text(data.deliver_phone);
+						$("#address").text(data.deliver_address);
+
+						//商品详情
+						var orderDetails = data.order_details;
+						for(var d = 0; d < orderDetails.length; d++) {
+							var li = [
+								'		<div>',
+								'			<li style="background: #FAFAFA;">',
+								'				<div class="ui-row-flex ui-whitespace" >',
+								'					<div class="ui-list-img">',
+								'						<span style="background-image:url(img/hud_icon.png)"></span>',
+								'					</div>',
+								'					<div>',
+								'						<h4 style="position: absolute;"><label id="productName">' + data.order_details[d].product_name + '</label></h4>',
+								'						<h4 style="position: absolute; right: 0px;">¥ <label id="productPrice">' + data.order_details[d].unit_price + '</label></h4>',
+								'					</div>',
+								'					<div style="margin-top: 20px;">',
+								'						<h4 style="position: absolute; "></h4>',
+								'						<h4 style="position: absolute; right: 0px;"><del><font style="color: #6B6B6B">¥ <label id="oldPrice">' + 1499.00 + '</label></font></del></h4>',
+								'					</div>',
+								'					<div style="margin-top: 40px;">',
+								'						<h5 style="position: absolute; "><font style="color: #CDCDCD">颜色：深灰</font></h5>',
+								'						<h5 style="position: absolute; right: 0px;"><font style="color: #CDCDCD">x <label id="icQuantity">' + data.order_details[d].quantity + '</label></font></h5>',
+								'					</div>',
+								'				</div>',
+								'			</li>',
+								'		</div>'
+							].join("");
+							$('#productList').append(li);
+						}
+
+						//判断快递是否为空
+						if(data.deliver_company_name != "" && data.deliver_code != "") {
+							expressCompany = data.deliver_company_name;
+							expressNum = data.deliver_code;
+						}
+
+						//价格详情
+						$("#totalPrice").text(data.total_amount);
+						$("#deliverFee").text(data.deliver_fee);
+						//						$("#discounts").text("100");
+						$("#payMoney").text(data.pay_amount);
+
+						var orderChannel;
+						//判断支付方式
+						if(data.order_channel == 1) {
+							orderChannel = "微信支付";
+						}
+						//支付详情
+						$("#orderChannel").text(orderChannel);
+						$("#orderId").text(data.order_id);
+						$("#orderTime").text(data.order_time);
+						if(data.payment_time != "") {
+							$("#payTime").text(data.payment_time);
+						} else {
+							$("#payTM").hide();
+						}
+						if(1 < 0) {
+							$("#deliver_Time").text(data.order_time);
+						} else {
+							$("#deliverTM").hide();
+						}
+						if(1 < 0) {
+							$("#bargainTime").text(data.order_time);
+						} else {
+							$("#bargainTM").hide();
+						}
+
+					} else {
+						console.log('get data failed');
+						alert("get product failed");
+					}
+				}
+			});
+		}
+
+		var paySign;
+		var appId;
+		var timeStamp;
+		var nonceStr;
+		var packageStr;
+		var signType;
+		//获取支付参数
+		var orderNo = localStorage["orderNo"];
+		var openId = localStorage["openId"];
+
+		function payOrder() {
+
+			var url = 'payOrder.action';
+			$.ajax({
+				type: "post",
+				url: url,
+				dataType: "json",
+				data: {
+					openId: openId,
+					orderNo: orderNo
+				},
+
+				success: function(data) {
+					console.log('data', data);
+					if(data.resultCode == 'SUCCESS') {
+
+						paySign = data.paySign;
+						appId = data.appId;
+						timeStamp = data.timeStamp;
+						nonceStr = data.nonceStr;
+						packageStr = data.packageStr;
+						signType = data.signType;
+
+						callpay();
+					} else {
+						console.log('get data failed');
+						alert("get product failed");
+					}
+				}
+			});
+		}
+
+		function callpay() {
+			if(typeof WeixinJSBridge == "undefined") {
+				console.log('weixinjsbridge undefined');
+				if(document.addEventListener) {
+					document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+				} else if(document.attachEvent) {
+					document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+					document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				}
+			} else {
+				console.log('onbridgeready');
+				onBridgeReady();
+			}
+		}
+
+		function onBridgeReady() {
+			console.log('invoke weixin pay');
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest', {
+					"appId": appId, //公众号名称，由商户传入
+					"paySign": paySign, //微信签名
+					"timeStamp": timeStamp, //时间戳，自1970年以来的秒数
+					"nonceStr": nonceStr, //随机串
+					"package": packageStr, //预支付交易会话标识
+					"signType": signType //微信签名方式
+				},
+				function(res) {
+					if(res.err_msg == "get_brand_wcpay_request:ok") {
+						window.location.replace("pay_success.html");
+						//						alert('支付成功');
+
+					} else if(res.err_msg == "get_brand_wcpay_request:cancel") {
+						//						alert('支付取消');
+						//						window.location.replace("pay_failed.html");
+					} else if(res.err_msg == "get_brand_wcpay_request:fail") {
+						//						alert('支付失败');
+						window.location.replace("pay_failed.html");
+					} //使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+				}
+			);
+		}
+
+		pushHistory();
+		window.addEventListener("popstate", function(e) {
+			window.location = 'Order_mine.jsp';
+		}, false);
+
+		function pushHistory() {
+			var state = {
+				title: "title",
+				url: "#"
+			};
+			window.history.pushState(state, "title", "#");
+		}
+	</script>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>支付结果</title>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/frozen.css">
+		<style type="text/css">
+			.mbtn-white {
+				border: #B3B3B3 1px solid;
+				color: #303030;
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<!--支付失败-->
+		<section style="background: #FF8400; padding:60px 30px;">
+			<div class="ui-row-flex ui-whitespace">
+				<div style="margin-right: 0px;">
+					<i class="ui-icon-close" style="font-size: 80px;color: #fff;"></i>
+				</div>
+				<div class="ui-col">
+					<h1 class="ui-txt-white">对不起，付款失败！</h1>
+					<h6 class="ui-txt-white">付款未能成功，请重新付款。</h6>
+				</div>
+			</div>
+		</section>
+
+		<section class="ui-placehold-img" style="height: 330px; ">
+			<span style="background-image:url(img/640.png)"></span>
+		</section>
+
+	</body>
+	
+	<script type="text/javascript">
+		pushHistory();
+		window.addEventListener("popstate", function(e) {
+			window.location = 'Order_details.html';
+		}, false);
+
+		function pushHistory() {
+			var state = {
+				title: "title",
+				url: "#"
+			};
+			window.history.pushState(state, "title", "#");
+		}
+	</script>
+
+</html>

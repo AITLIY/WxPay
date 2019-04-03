@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="/" extends="struts-default,json-default">  
+
+        <action name="wechatCallback" class="wechatPayAction" method="wechatCallback">  
+          <!--  <result type="json" />    -->
+           <result name="success">confirm_item.jsp</result>
+           <result name="error"> error.jsp </result>
+        </action>
+        <action name="qrCodePayCallback" class="wechatPayAction" method="qrCodePayCallback">  
+           <result name="success">qrcodepay_item.jsp</result>
+           <result name="error"> error.jsp </result>
+        </action>
+         <action name="qrcodePay" class="wechatPayAction" method="qrcodePay">  
+           <result type="json" /> 
+        </action>
+        
+         <action name="queryOrderCallback" class="wechatPayAction" method="queryOrderCallback">  
+           <result name="success">Order_mine.jsp</result>
+           <result name="error"> error.jsp </result>
+        </action>
+        
+        <action name="wechatPay" class="wechatPayAction" method="wechatPay"> 
+        	 <result type="json" >  
+        	 	<!--jsresult必须在Action中定义，必须写它的get，set方法 -->
+                <param name="root">jsresult</param>
+             </result>
+        </action>
+        
+        
+        <action name="payOrder" class="wechatPayAction" method="payOrder"> 
+        	 <result type="json" >  
+             </result>
+        </action>
+        
+        <action name="getDeliveryCompanyList" class="wechatPayAction" method="getDeliveryCompanyList"> 
+        	 <result type="json" >  
+             </result>
+        </action>
+        
+        <action name="getSaleProductList" class="wechatPayAction" method="getSaleProductList"> 
+        	 <result type="json" >  
+             </result>
+        </action>
+        
+        <action name="getClientOrders" class="wechatPayAction" method="getClientOrders"> 
+        	 <result type="json" >  
+             </result>
+        </action>
+         
+         
+         <action name="getClientOrderDetails" class="wechatPayAction" method="getClientOrderDetails"> 
+        	 <result type="json" >  
+             </result>
+        </action>
+        
+        <action name="cancelOrder" class="wechatPayAction" method="cancelOrder"> 
+        	 <result type="json" >  
+             </result>
+        </action>
+        
+         <action name="payResult" class="wechatPayAction" method="payResult">  
+          <!--  <result type="json" />  
+           <result name="success">confirm_item.html </result>
+           <result name="error"> error.jsp </result>
+           -->
+        </action>
+        
+        <action name="WXMessageCallback" class="serviceAccountAction" method="WXMessageCallback">  
+        </action>
+        
+</package>
+</struts>    

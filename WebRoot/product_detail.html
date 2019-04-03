@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>酷驾导航HUD-酷驾导航</title>
+		<link rel="stylesheet" href="css/frozen.css">
+		<link rel="stylesheet" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/frozen.js"></script>
+		<style type="text/css">
+			.mbtn {
+				width: 80px;
+				height: 25px;
+				background: #232323;
+				color: #FFF;
+				position: absolute;
+				right: 10px;
+				margin-top: 8px;
+				font-size: medium;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header class="ui-header ui-header-stable ui-border-b" style="background: #232323;">
+			<i class="ui-icon-personal" style="position: absolute; right: 85px;color: #fff;"></i>
+			<button class="mbtn" id="myOrder">我的订单</button>
+		</header>
+
+		<!--轮播图-->
+		<div class="ui-slider" style="margin-top: 45px;">
+			<ul class="ui-slider-content" style="width: 300%">
+				<li><span style="background-image:url(img/banner_01.png)"></span></li>
+				<li><span style="background-image:url(img/banner_02.png)"></span></li>
+				<li><span style="background-image:url(img/banner_03.png)"></span></li>
+				<li><span style="background-image:url(img/banner_04.png)"></span></li>
+				<li><span style="background-image:url(img/banner_05.png)"></span></li>
+			</ul>
+		</div>
+		<script class="demo-script">
+			(function() {
+				var slider = new fz.Scroll('.ui-slider', {
+					role: 'slider',
+					indicator: true,
+					autoplay: true,
+					interval: 3000,
+				});
+
+				slider.on('beforeScrollStart', function(fromIndex, toIndex) {
+					//console.log(fromIndex, toIndex)
+				});
+
+				slider.on('scrollEnd', function(cruPage) {
+					//console.log(cruPage)
+				});
+			})();
+		</script>
+
+		<div>
+			<!--商品介绍-->
+			<ul class="ui-list ui-list-pure ui-border-tb">
+				<li class="ui-border-t">
+					<h1><label id="productName"></label></h1>
+					<h4><font style="color: #FF0101"><span>【酷驾HUD现货在售】</span></font>
+						<font style="color: #6B6B6B"><span>全语音导航/天气播报/高德地图/导航信息(路名、方向、距离等)、车况(车速、转速、油耗等)、来电、短信等信息的平视显示</span></font>
+					</h4>
+				</li>
+			</ul>
+
+			<!--商品价格-->
+			<ul class="ui-list ui-list-text ui-border-tb">
+				<li class="ui-border-t">
+					<div class="ui-list-info">
+						<h4><font color="red">¥ <label id="productPrice"></label></font></h4>
+					</div>
+					<div class="ui-list-action">
+						<h5>
+						<font color="red"><label id="discounts"></label></font>
+					</h5>
+					</div>
+				</li>
+				<li class="ui-border-t">
+					<div class="ui-list-info">
+						<h6><del><font style="color: #6B6B6B">¥ <label id="oldPrice"></label></font></del></h6>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<!--间隔-->
+		<section style="background: #E7E7E7;padding: 5px;"></section>
+
+		<!--标签页-->
+		<div class="ui-tab" id="tab1" style="margin-bottom: 50px;">
+			<ul class="ui-tab-nav ui-border-b">
+				<li class="current">概述</li>
+				<li>参数</li>
+
+			</ul>
+			<ul class="ui-tab-content" style="width:200%">
+				<!--概述-->
+				<li>
+					<!--控件的width是 640px 屏幕宽是 375px， 所以图片高度 = 图片实际高度/(640/375)-->
+					<!-- 注：为适配安卓手机图片高度需再减去30以上 -->
+					<section class="ui-placehold-img" style="height: 330px;">
+						<span style="background-image:url(img/overview_001.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 550px; ">
+						<span style="background-image:url(img/overview_002.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 350px; ">
+						<span style="background-image:url(img/overview_003.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 320px; ">
+						<span style="background-image:url(img/overview_004.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 320px; ">
+						<span style="background-image:url(img/overview_005.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 320px; ">
+						<span style="background-image:url(img/overview_006.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 260px; ">
+						<span style="background-image:url(img/overview_007.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 190px; ">
+						<span style="background-image:url(img/overview_009.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 280px; ">
+						<span style="background-image:url(img/overview_010.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 280px; ">
+						<span style="background-image:url(img/overview_008.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 530px; ">
+						<span style="background-image:url(img/overview_011.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 780px; ">
+						<span style="background-image:url(img/overview_012.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 350px; ">
+						<span style="background-image:url(img/overview_013.png)"></span>
+					</section>
+				</li>
+				<!--参数-->
+				<li>
+					<section class="ui-placehold-img" style="height: 350px; ">
+						<span style="background-image:url(img/parameters_01.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 400px; ">
+						<span style="background-image:url(img/parameters_02.png)"></span>
+					</section>
+					<section class="ui-placehold-img" style="height: 650px; ">
+						<span style="background-image:url(img/parameters_03.png)"></span>
+					</section>
+				</li>
+			</ul>
+		</div>
+		<div class="ui-list		-img" style="">
+			<script class="demo-script">
+				(function() {
+					var tab = new fz.Scroll('.ui-tab', {
+						role: 'tab',
+						autoplay: false,
+						interval: 3000
+					});
+					/* 滑动开始前 */
+					tab.on('beforeScrollStart', function(fromIndex, toIndex) {
+						// from 为当前页，to 为下一页
+					})
+				})();
+			</script>
+
+			<!--浮动按钮-->
+			<div class="ui-footer ui-footer-stable ui-btn-group ui-border-t">
+				<button class="ui-btn-lg ui-btn-danger" id="buy">立即购买</button>
+			</div>
+
+			<script type="text/javascript">
+				//网页加载时调用
+				$(document).ready(function() {
+					getProducts();
+				});
+
+				//获取产品信息
+				function getProducts() {
+					var url = 'getSaleProductList.action';
+					//get product list
+					$.ajax({
+						type: "post",
+						url: url,
+						dataType: "json",
+						data: {},
+
+						success: function(data) {
+							console.log('data', data);
+							if(data.resultCode == 'SUCCESS') {
+								//alert("get product success");
+								//设置产品名称 价格 
+								var productId = 1;
+								var products = data.products;
+								for(var p = 0, len = products.length; p < len; p++) {
+									if(data.products[p].product_id == productId) {
+										var productName = products[p].product_name;
+										var unitPrice = products[p].unit_price;
+										$("#productName").text(productName);
+										$("#productPrice").text(unitPrice);
+										$("#oldPrice").text("1499.00");
+
+										if(window.localStorage) {
+											//把产品名称 价格用localStorage存储
+											localStorage.productName = productName;
+											localStorage.unitPrice = unitPrice;
+										} else {
+											//浏览器不支持 不存储
+										}
+									}
+								}
+							} else {
+								console.log('get data failed');
+								alert("get product failed");
+							}
+						}
+					});
+				}
+
+				//跳转到confirm_item页面
+				function order() {
+					//authenticate user;
+					var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1d5f79b2286b25a3&redirect_uri=http://wx.cooldrivenavi.com/WxPay/wechatCallback.action&response_type=code&scope=snsapi_base&state=f211b35536e482d1049b836fb2d7437f#wechat_redirect';
+
+					window.location.href = url;
+
+				}
+
+				//跳转到Order_mine页面
+				function queryMyOrder() {
+					//authenticate user;
+					var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1d5f79b2286b25a3&redirect_uri=http://wx.cooldrivenavi.com/WxPay/queryOrderCallback.action&response_type=code&scope=snsapi_base&state=f211b35536e482d1049b836fb2d7437f#wechat_redirect';
+
+					window.location.href = url;
+
+				}
+
+				//点击查看用户订单
+				$("#myOrder").click(function() {
+					console.log("跳转到Order_mine页面");
+					queryMyOrder();
+				})
+
+				//点击购买
+				$("#buy").click(function() {
+					console.log("跳转到confirm_item页面");
+					order();
+				})
+			</script>
+
+	</body>
+
+</html>

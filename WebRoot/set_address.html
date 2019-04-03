@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>修改地址</title>
+		<link rel="stylesheet" href="css/frozen.css">
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+	</head>
+
+	<body>
+
+		<!--填写收货人信息-->
+		<div style="margin: 30px">
+
+			<p>收货人
+				<font color="red">*</font>
+			</p>
+			<div class="ui-input ui-border-radius">
+				<input type="text" name="" value="" placeholder="请填写您的姓名" id="name">
+			</div>
+			<p>联系电话
+				<font color="red">*</font>
+			</p>
+			<div class="ui-input ui-border-radius">
+				<input type="text" name="" value="" placeholder="请填写您的手机号码" id="phone">
+			</div>
+			<p>配送地址
+				<font color="red">*</font>
+			</p>
+			<div class="iphone">
+				<div class="browser">
+					<!--选择地区-->
+					<section class="express-area">
+						<a id="expressArea" href="javascript:void(0)">
+							<dl>
+								<dt>所在地区：</dt>
+								<dd id="city">请选择</dd>
+							</dl>
+						</a>
+					</section>
+					<!--选择地区弹层-->
+					<section id="areaLayer" class="express-area-box">
+						<header>
+							<h3>选择地区</h3>
+							<a id="backUp" class="back" href="javascript:void(0)" title="返回"></a>
+							<a id="closeArea" class="close" href="javascript:void(0)" title="关闭"></a>
+						</header>
+						<article id="areaBox">
+							<ul id="areaList" class="area-list"></ul>
+						</article>
+					</section>
+					<!--遮罩层-->
+					<div id="areaMask" class="mask"></div>
+					<script src="js/jquery.area.js"></script>
+				</div>
+			</div>
+			<div class="ui-input ui-border-radius">
+				<input type="text" name="" value="" placeholder="详细地址" id="home">
+			</div>
+		</div>
+
+		<!--普通按钮-->
+		<div class="ui-btn-wrap">
+			<button class="ui-btn-lg ui-btn-danger" id="cofirm">确定</button>
+		</div>
+
+	</body>
+
+	<script type="text/javascript">
+		//网页加载时调用
+		$(document).ready(function() {
+			setAddress();
+		});
+
+		var name;
+		var phone;
+		var city;
+		var home;
+		//设置地址
+		function setAddress() {
+			//取出localStorage存储的值 并填入
+			name = localStorage["name"];
+			phone = localStorage["phone"];
+			home = localStorage["home"];
+
+			if(name != undefined && phone != undefined && home != undefined) {
+				$("#name").val(name);
+				$("#phone").val(phone);
+				$("#home").val(home);
+			} else {
+				//直接从服务器获取
+			}
+		}
+
+		$("#cofirm").click(function() {
+			//获取填入的姓名 手机 地址
+			name = document.getElementById("name").value;
+			phone = document.getElementById("phone").value;
+			city = document.getElementById("city").innerText;
+			home = document.getElementById("home").value;
+			var reg = /0?(13|14|15|18)[0-9]{9}/;
+			var empty = /\s/;
+
+			if(window.localStorage) {
+				//用localStorage存储姓名 电话 地址
+				localStorage.name = name;
+				localStorage.phone = phone;
+				localStorage.home = home;
+
+				var grades = city.split(" > ");
+				var address = grades[0] + grades[1] + (grades.length < 3 ? "" : grades[2]) + home;
+				localStorage.address = address;
+			} else {
+				//浏览器不支持 直接上传服务器
+			}
+
+			if(name == "") {
+				alert("请输入您的姓名！");
+			} else if(!reg.test(phone)) {
+				alert("请输入正确的手机号码！");
+			} else if(city == "请选择") {
+				alert("请选择您的城市！");
+			} else if(name == "") {
+				alert("请输入您的详细地址！");
+			} else {
+				//跳转到confirm_item.jsp页面
+				window.location.replace("confirm_item.jsp");
+			};
+		})
+
+		pushHistory();
+		window.addEventListener("popstate", function(e) {
+			window.location = 'confirm_item.jsp';
+		}, false);
+
+		function pushHistory() {
+			var state = {
+				title: "title",
+				url: "#"
+			};
+			window.history.pushState(state, "title", "#");
+		}
+	</script>
+
+</html>
